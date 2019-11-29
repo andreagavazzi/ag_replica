@@ -2,4 +2,4 @@
 
 Pic | Description
 ------------ | -------------
-https://github.com/andreagavazzi/ag_replica/blob/master/assets/IMG_0327.PNG | Hind
+![GitHub Logo](/assets/IMG_0327_800.pngg) | Hind
