@@ -1,0 +1,43 @@
+// Ultrasonic range
+
+#include <ros.h> 
+#include <ros/time.h> 
+#include <sensor_msgs/Range.h> 
+
+unsigned long range_timer; //Used to measure 50 ms interval 
+
+// instantiate node handle and publisher for  
+// a sensor_msgs/Range message (topic name is /ultrasound) 
+
+ros::NodeHandle nh; 
+sensor_msgs::Range range_msg; 
+ros::Publisher pub_range( "ultrasound", &range_msg); 
+
+void setup() 
+{ 
+// initialize the node and message publisher 
+nh.initNode(); 
+nh.advertise(pub_range); 
+
+// fill the description fields in the range_msg 
+range_msg.radiation_type = sensor_msgs::Range::ULTRASOUND; 
+range_msg.header.frame_id = "/ultrasound"; 
+range_msg.field_of_view = 0.26; //field of view in radiant 
+range_msg.min_range = 0.02; //minimum range in m 
+range_msg.max_range = 3.5;  //maximum range in m 
+} 
+
+void loop() 
+{ 
+// sample the range data from the ultrasound sensor and 
+// publish the range value once every 50 milliseconds 
+if ( (millis()-range_timer) > 50) 
+{ 
+range_msg.range = getRange()/100.0;  //range in m 
+range_msg.header.stamp = nh.now(); 
+pub_range.publish(&range_msg); 
+range_timer = millis() + 50; 
+} 
+nh.spinOnce(); 
+} 
+
